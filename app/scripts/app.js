@@ -16,22 +16,22 @@
     $('#searchButton').click(function() {
 
       // Resets UI elements.
-      $('#phosphat_protein-seq-cont', appContext).hide();
+      $('#gene_protein-seq-cont', appContext).hide();
       $('#error', appContext).empty();
 
       // Inserts loading text, will be replaced by table
-      $('#phosphat_experimental', appContext).html('<h2>Loading...</h2>');
-      $('#phosphat_predicted', appContext).html('<h2>Loading...</h2>');
-      $('#phosphat_hotspots', appContext).html('<h2>Loading...</h2>');
+      $('#gene_experimental', appContext).html('<h2>Loading...</h2>');
+      $('#gene_predicted', appContext).html('<h2>Loading...</h2>');
+      $('#gene_hotspots', appContext).html('<h2>Loading...</h2>');
 
       // Saves user-input as a parameter
       var params = {
-        transcript_id: $('input[name=phosphat_transcript-input]').val()
+        transcript_id: $('input[name=gene_transcript-input]').val()
       };
 
       // Calls API to retrieve experimental data, using saved parameter
       Agave.api.adama.search(
-        {namespace: 'phosphat', service: 'phosphorylated_experimental_v0.2',
+        {namespace: 'gene', service: 'phosphorylated_experimental_v0.2',
          queryParams: params},
         showExperimentalData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception
@@ -39,7 +39,7 @@
 
       // Calls API to retrieve predicted data, using saved parameter
       Agave.api.adama.search(
-        {namespace: 'phosphat', service: 'phosphorylated_predicted_v0.2',
+        {namespace: 'gene', service: 'phosphorylated_predicted_v0.2',
          queryParams: params},
         showPredictedData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception
@@ -47,7 +47,7 @@
 
       // Calls API to retrieve hotspot data, using saved parameter
       Agave.api.adama.search(
-        {namespace: 'phosphat', service: 'phosphorylated_hotspots_v0.2',
+        {namespace: 'gene', service: 'phosphorylated_hotspots_v0.2',
          queryParams: params},
         showHotspotData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception.
@@ -63,17 +63,17 @@
 
       // Displays protein sequence
       if (data.length > 0) {
-        $('#phosphat_protein-seq', appContext).html(data[0].protein_sequence);
-        $('#phosphat_protein-seq-cont', appContext).show();
+        $('#gene_protein-seq', appContext).html(data[0].protein_sequence);
+        $('#gene_protein-seq-cont', appContext).show();
       }
 
       // Creates a base table that the data will be stored in
-      $('#phosphat_experimental', appContext).html(
-        '<table width="100%" cellspacing="0" id="phosphat_experimental-table"' +
+      $('#gene_experimental', appContext).html(
+        '<table width="100%" cellspacing="0" id="gene_experimental-table"' +
         'class="table table-striped table-bordered table-hover">' +
         '<thead><tr><th>Peptide Sequence</th><th>Position</th>' +
         '<th>Modification Type</th><th>Mass</th></tr></thead>' +
-        '<tbody id="phosphat_experimental-data"></tbody></table>');
+        '<tbody id="gene_experimental-data"></tbody></table>');
 
 
       // Loops through each JSON object in the data
@@ -91,12 +91,12 @@
         }
 
         // Dynamically adds saved data to the table
-        $('#phosphat_experimental-data', appContext).append('<tr>' + peptideSeq +
+        $('#gene_experimental-data', appContext).append('<tr>' + peptideSeq +
         peptidePos + modType  + peptideMass + '</tr>');
       }
 
       // Converts normal table to DataTable
-      experimentalTable = $('#phosphat_experimental-table', appContext).DataTable({
+      experimentalTable = $('#gene_experimental-table', appContext).DataTable({
         oLanguage: { // Overrides default text to make it more specific to this app
           sSearch: 'Narrow results:',
           sEmptyTable: 'No experimental phosphorylation data available for this transcript id.'
@@ -118,12 +118,12 @@
       data = data.result; // data.result contains an array of objects
 
       // Creates a base table that the data will be stored in
-      $('#phosphat_predicted', appContext).html(
-        '<table id="phosphat_predicted-table" width="100%" cellspacing="0"' +
+      $('#gene_predicted', appContext).html(
+        '<table id="gene_predicted-table" width="100%" cellspacing="0"' +
         'class="table table-striped table-bordered table-hover">' +
         '<thead><tr><th>Protein Position</th><th>13-mer Sequence</th>' +
         '<th>Prediction Score</th></tr></thead>' +
-        '<tbody id="phosphat_predicted-data"></tbody></table>');
+        '<tbody id="gene_predicted-data"></tbody></table>');
 
       // Loops through each JSON object in the data
       for (var i = 0; i < data.length; i++) {
@@ -134,12 +134,12 @@
         var predictionScore = '<td>' + parseFloat(data[i].prediction_score).toFixed(4) + '</td>';
 
         // Dynamically adds saved data to the table
-        $('#phosphat_predicted-data', appContext).append('<tr>' + proteinPos +
+        $('#gene_predicted-data', appContext).append('<tr>' + proteinPos +
         sequence + predictionScore + '</tr>');
       }
 
       // Converts normal table to DataTable
-        predictedTable = $('#phosphat_predicted-table', appContext).DataTable({
+        predictedTable = $('#gene_predicted-table', appContext).DataTable({
         oLanguage: { // Overrides default text to make it more specific to this app
           sSearch: 'Narrow results:',
           sEmptyTable: 'No predicted phosphorylation data available for this transcript id.'
@@ -160,12 +160,12 @@
       data = data.result; // data.result contains an array of objects
 
       // Creates a base table that the data will be stored in
-      $('#phosphat_hotspots', appContext).html(
-        '<table id="phosphat_hotspot-table" width="100%" cellspacing="0"' +
+      $('#gene_hotspots', appContext).html(
+        '<table id="gene_hotspot-table" width="100%" cellspacing="0"' +
         'class="table table-striped table-bordered table-hover">' +
         '<thead><tr><th>Start Position</th><th>End Position</th>' +
         '<th>Hotspot Sequence</th></tr></thead>' +
-        '<tbody id="phosphat_hotspot-data"></tbody></table>');
+        '<tbody id="gene_hotspot-data"></tbody></table>');
 
       // Loops through each JSON object in the data
       for (var i = 0; i < data.length; i++) {
@@ -175,12 +175,12 @@
         var sequence = '<td>' + data[i].hotspot_sequence + '</td>';
 
         // Dynamically adds saved data to the table
-        $('#phosphat_hotspot-data', appContext).append('<tr>' + start +
+        $('#gene_hotspot-data', appContext).append('<tr>' + start +
         end + sequence + '</tr>');
       }
 
       // Converts normal table to DataTable
-      hotspotTable = $('#phosphat_hotspot-table', appContext).DataTable({
+      hotspotTable = $('#gene_hotspot-table', appContext).DataTable({
         oLanguage: { // Overrides default text to make it more specific to this app
           sSearch: 'Narrow results:',
           sEmptyTable: 'No hotspot data available for this transcript id.'
@@ -195,7 +195,7 @@
 
     // Displays an error message if the API returns an error
     var showErrorMessage = function showErrorMessage(response) {
-      $('#phosphat_error', appContext).html(
+      $('#gene_error', appContext).html(
           '<h4>There was an error retrieving your data from the server. ' +
           'See below:</h4><div class="alert alert-danger" role="alert">' +
            response.obj.message + '</div>');
