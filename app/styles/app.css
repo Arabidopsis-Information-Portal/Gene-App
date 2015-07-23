@@ -1,0 +1,23 @@
+#phosphat_protein-seq-cont {
+  display: none;
+}
+#phosphat_protein-seq {
+  width: 75%;
+  overflow-x: scroll;
+  padding: 5px;
+  background-color: #f9f9f9;
+  border-top: 1px solid black;
+}
+#phosphat_about {
+  padding: 3%;
+}
+#paper-credit {
+  font-size: .8em;
+}
+h4 {
+  line-height: 130%;
+}
+
+#phos_logo {
+  border-radius: 0% 25%;
+}

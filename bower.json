@@ -1,0 +1,8 @@
+{
+  "name": "gene-app",
+  "private": true,
+  "dependencies": {
+    "DataTables": "~1.10.7",
+    "datatables-colreorder": "~1.1.3"
+  }
+}

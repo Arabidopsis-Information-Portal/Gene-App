@@ -1,0 +1,64 @@
+<div class="science-app" data-app-name="gene-app">
+  <h2>Gene Search</h2>
+
+  <form>
+  Gene ID: <input type="text" name="gene-input">
+  <button type="button" id="searchButton">Search</button>
+  <h6><i>Example GeneID: AT4G34260</i></h6>
+  </form>
+
+  <br>
+
+  <!-- Navigation tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" id="about-tab" class="active">
+  <a href="#about" aria-controls="about" role="tab" data-toggle="tab">About</a>
+  </li>
+
+  <li role="presentation" id="chromosome-tab">
+  <a href="#gene_chromosome" aria-controls="chromosome" role="tab" data-toggle="tab">Chromosome<span id="chromosome_num_rows"></span></a>
+  </li>
+
+  <li role="presentation" id="go-tab">
+  <a href="#gene_go" aria-controls="go" role="go" data-toggle="tab">GO<span id="go_num_rows"></span></a>
+  </li>
+
+  <li role="presentation" id="phenotype-tab">
+  <a href="#gene_phenotype" aria-controls="phenotype" role="phenotype" data-toggle="tab">Phenotype<span id="phenotype_num_rows"></span></a>
+  </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+
+    <!-- About tab -->
+    <div role="tabpanel" class="tab-pane fade in active" id="about">
+
+      <h4>This app displays tables containing data, about a certain geneID. </h4>
+
+      <h3>Instructions:</h3>
+      <h4>
+        Enter a geneID in the input box. An example geneID is below the search box. Once the search button is clicked the tables in the tabs will be loaded with data. Click on any of the tabs to view that table.
+        <br><br>
+        Notes:</h4>
+        <ul>
+          <li>Ongoing WIP...</li>
+          <li>Any bugs, please let me know.</li>
+        </ul>
+
+    </div> <!-- Close #about -->
+
+    <!-- Data tables -->
+    <div role="tabpanel" class="tab-pane fade" id="gene_chromosome">
+      <h2>Please search for a geneID.</h2>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="gene_go">
+      <h2>Please search for a geneID.</h2>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="gene_phenotype">
+      <h2>Please search for a geneID.</h2>
+    </div>
+
+  </div> <!-- Close .tab-content -->
+
+</div> <!-- Close .science-app -->
