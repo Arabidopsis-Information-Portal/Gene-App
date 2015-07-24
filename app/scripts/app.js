@@ -102,6 +102,7 @@
 
     };
 
+/*
 #TODO
     // Creates a table to display predicted data
     var showPredictedData = function showPredictedData(response) {
@@ -143,7 +144,9 @@
       // Add the number of rows to the tab name
       $('#pred_num_rows', appContext).html(' (' + predictedTable.data().length + ')');
     };
+*/
 
+/*
 //TODO
     // Creates a table to display hotspot data
     var showHotspotData = function showHotspotData(response) {
@@ -185,11 +188,12 @@
       // Add the number of rows to the tab name
       $('#hot_num_rows', appContext).html(' (' + hotspotTable.data().length + ')');
     };
+*/
 
     // Displays an error message if the API returns an error
     var showErrorMessage = function showErrorMessage(response) {
       $('#gene_error', appContext).html(
-          '<h4>There was an error retrieving your data from the server. ' +
+          '<h4>API Error.' +
           'See below:</h4><div class="alert alert-danger" role="alert">' +
            response.obj.message + '</div>');
 
