@@ -7,7 +7,7 @@
     var Agave = window.Agave;
 
     // Will be used to store initialized DataTables
-    var experimentalTable,
+    var chromosomeTable,
         predictedTable,
         hotspotTable;
 
@@ -15,25 +15,24 @@
     //change to submit
     $('#searchButton').click(function() {
 
-      // Resets UI elements.
-      $('#gene_protein-seq-cont', appContext).hide();
+      // Reset UI
       $('#error', appContext).empty();
 
       // Inserts loading text, will be replaced by table
-      $('#gene_experimental', appContext).html('<h2>Loading...</h2>');
-      $('#gene_predicted', appContext).html('<h2>Loading...</h2>');
-      $('#gene_hotspots', appContext).html('<h2>Loading...</h2>');
+      $('#gene_chromosome', appContext).html('<h2>Loading...</h2>');
+      $('#gene_go', appContext).html('<h2>Loading...</h2>');
+      $('#gene_phenotype', appContext).html('<h2>Loading...</h2>');
 
       // Saves user-input as a parameter
       var params = {
         transcript_id: $('input[name=gene_transcript-input]').val()
       };
 
-      // Calls API to retrieve experimental data, using saved parameter
+      // Calls API to retrieve chromosome data, using saved parameter
       Agave.api.adama.search(
-        {namespace: 'gene', service: 'phosphorylated_experimental_v0.2',
+        {namespace: 'gene', service: 'gene_by_geneid_v0.2.1',
          queryParams: params},
-        showExperimentalData, // Displays retrieved data in a table
+        showChromosomeData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception
       );
 
@@ -55,25 +54,19 @@
     });
 
 
-    // Creates a table to display experimental data
-    var showExperimentalData = function showExperimentalData(response) {
+    // Creates a table to display chromosome data
+    var showChromosomeData = function showChromosomeData(response) {
       // Stores API response
       var data = response.obj || response;
       data = data.result; // data.result contains an array of objects
 
-      // Displays protein sequence
-      if (data.length > 0) {
-        $('#gene_protein-seq', appContext).html(data[0].protein_sequence);
-        $('#gene_protein-seq-cont', appContext).show();
-      }
-
       // Creates a base table that the data will be stored in
-      $('#gene_experimental', appContext).html(
-        '<table width="100%" cellspacing="0" id="gene_experimental-table"' +
+      $('#gene_chromosome', appContext).html(
+        '<table width="100%" cellspacing="0" id="gene_chromosome-table"' +
         'class="table table-striped table-bordered table-hover">' +
         '<thead><tr><th>Peptide Sequence</th><th>Position</th>' +
         '<th>Modification Type</th><th>Mass</th></tr></thead>' +
-        '<tbody id="gene_experimental-data"></tbody></table>');
+        '<tbody id="gene_chromosome-data"></tbody></table>');
 
 
       // Loops through each JSON object in the data
@@ -91,22 +84,22 @@
         }
 
         // Dynamically adds saved data to the table
-        $('#gene_experimental-data', appContext).append('<tr>' + peptideSeq +
+        $('#gene_chromosome-data', appContext).append('<tr>' + peptideSeq +
         peptidePos + modType  + peptideMass + '</tr>');
       }
 
       // Converts normal table to DataTable
-      experimentalTable = $('#gene_experimental-table', appContext).DataTable({
+      chromosomeTable = $('#gene_chromosome-table', appContext).DataTable({
         oLanguage: { // Overrides default text to make it more specific to this app
           sSearch: 'Narrow results:',
-          sEmptyTable: 'No experimental phosphorylation data available for this transcript id.'
+          sEmptyTable: 'No chromosomeental phosphorylation data available for this transcript id.'
         },
         dom: 'Rlfrtip', // Allows for user to reorder columns
         stateSave: true // Saves the state of the table between loads
       });
 
       // Add the number of rows to the tab name
-    $('#exp_num_rows', appContext).html(' (' + experimentalTable.data().length + ')');
+    $('#exp_num_rows', appContext).html(' (' + chromosomeTable.data().length + ')');
 
 
     };
