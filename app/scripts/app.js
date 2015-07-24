@@ -38,6 +38,7 @@
 
       // Calls API to retrieve predicted data, using saved parameter
       Agave.api.adama.search(
+        //TODO
         {namespace: 'gene', service: 'phosphorylated_predicted_v0.2',
          queryParams: params},
         showPredictedData, // Displays retrieved data in a table
@@ -46,6 +47,7 @@
 
       // Calls API to retrieve hotspot data, using saved parameter
       Agave.api.adama.search(
+        //TODO
         {namespace: 'gene', service: 'phosphorylated_hotspots_v0.2',
          queryParams: params},
         showHotspotData, // Displays retrieved data in a table
@@ -64,17 +66,14 @@
       $('#gene_chromosome', appContext).html(
         '<table width="100%" cellspacing="0" id="gene_chromosome-table"' +
         'class="table table-striped table-bordered table-hover">' +
-        '<thead><tr><th>Peptide Sequence</th><th>Position</th>' +
-        '<th>Modification Type</th><th>Mass</th></tr></thead>' +
+        '<thead><tr><th>Field</th><th>Result</th>' +
         '<tbody id="gene_chromosome-data"></tbody></table>');
-
 
       // Loops through each JSON object in the data
       for (var i = 0; i < data.length; i++) {
         // Saves data in strings to later be added to table
-        var peptideSeq = '<td>' + data[i].peptide_sequence + '</td>';
-        var peptidePos = '<td>' + data[i].position_in_peptide + '</td>';
-        var modType = '<td>' + data[i].modification_type + '</td>';
+        var field = '<td>' + data[i].peptide_sequence + '</td>';
+        var result = '<td>' + data[i].position_in_peptide + '</td>';
         // Checks to see if a mass was provided, if so round it.
         var peptideMass;
         if (data[i].mass !== '') {
@@ -101,9 +100,9 @@
       // Add the number of rows to the tab name
     $('#exp_num_rows', appContext).html(' (' + chromosomeTable.data().length + ')');
 
-
     };
 
+#TODO
     // Creates a table to display predicted data
     var showPredictedData = function showPredictedData(response) {
       // Stores API response
@@ -145,6 +144,7 @@
       $('#pred_num_rows', appContext).html(' (' + predictedTable.data().length + ')');
     };
 
+//TODO
     // Creates a table to display hotspot data
     var showHotspotData = function showHotspotData(response) {
 
