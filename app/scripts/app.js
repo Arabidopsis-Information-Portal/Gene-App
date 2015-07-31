@@ -8,7 +8,7 @@
 
     // Will be used to store initialized DataTables
     var chromosomeTable,
-        predictedTable,
+        goTable,
         hotspotTable;
 
     // Once the search button is clicked, retrieve the data
@@ -25,30 +25,31 @@
 
       // Saves user-input as a parameter
       var params = {
-        transcript_id: $('input[name=gene_transcript-input]').val()
+        Identifier: $('input[name=gene_transcript-input]').val()
+        Output: "all"
       };
 
       // Calls API to retrieve chromosome data, using saved parameter
       Agave.api.adama.search(
-        {namespace: 'gene', service: 'gene_by_geneid_v0.2.1',
+        {namespace: 'ichezhia', service: 'gene_by_geneid_v0.2',
          queryParams: params},
         showChromosomeData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception
       );
 
-      // Calls API to retrieve predicted data, using saved parameter
+      // Calls API to retrieve go data, using saved parameter
       Agave.api.adama.search(
         //TODO
-        {namespace: 'gene', service: 'phosphorylated_predicted_v0.2',
+        {namespace: 'ichezhia', service: 'go_by_geneid_v0.2',
          queryParams: params},
-        showPredictedData, // Displays retrieved data in a table
+        showgoData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception
       );
 
       // Calls API to retrieve hotspot data, using saved parameter
       Agave.api.adama.search(
         //TODO
-        {namespace: 'gene', service: 'phosphorylated_hotspots_v0.2',
+        {namespace: 'ichezhia', service: 'phosphorylated_hotspots_v0.2',
          queryParams: params},
         showHotspotData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception.
@@ -104,20 +105,18 @@
 
 /*
 #TODO
-    // Creates a table to display predicted data
-    var showPredictedData = function showPredictedData(response) {
+    // Creates a table to display go data
+    var showgoData = function showgoData(response) {
       // Stores API response
       var data = response.obj || response;
       data = data.result; // data.result contains an array of objects
-
       // Creates a base table that the data will be stored in
-      $('#gene_predicted', appContext).html(
-        '<table id="gene_predicted-table" width="100%" cellspacing="0"' +
+      $('#gene_go', appContext).html(
+        '<table id="gene_go-table" width="100%" cellspacing="0"' +
         'class="table table-striped table-bordered table-hover">' +
         '<thead><tr><th>Protein Position</th><th>13-mer Sequence</th>' +
         '<th>Prediction Score</th></tr></thead>' +
-        '<tbody id="gene_predicted-data"></tbody></table>');
-
+        '<tbody id="gene_go-data"></tbody></table>');
       // Loops through each JSON object in the data
       for (var i = 0; i < data.length; i++) {
         // Saves data in strings to later be added to table
@@ -125,24 +124,21 @@
         var sequence = '<td>' + data[i].thirteen_mer_sequence + '</td>';
         // Rounds number
         var predictionScore = '<td>' + parseFloat(data[i].prediction_score).toFixed(4) + '</td>';
-
         // Dynamically adds saved data to the table
-        $('#gene_predicted-data', appContext).append('<tr>' + proteinPos +
+        $('#gene_go-data', appContext).append('<tr>' + proteinPos +
         sequence + predictionScore + '</tr>');
       }
-
       // Converts normal table to DataTable
-        predictedTable = $('#gene_predicted-table', appContext).DataTable({
+        goTable = $('#gene_go-table', appContext).DataTable({
         oLanguage: { // Overrides default text to make it more specific to this app
           sSearch: 'Narrow results:',
-          sEmptyTable: 'No predicted phosphorylation data available for this transcript id.'
+          sEmptyTable: 'No go phosphorylation data available for this transcript id.'
         },
         dom: 'Rlfrtip', // Allows for user to reorder columns
         stateSave: true // Saves the state of the table between loads
       });
-
       // Add the number of rows to the tab name
-      $('#pred_num_rows', appContext).html(' (' + predictedTable.data().length + ')');
+      $('#pred_num_rows', appContext).html(' (' + goTable.data().length + ')');
     };
 */
 
@@ -150,11 +146,9 @@
 //TODO
     // Creates a table to display hotspot data
     var showHotspotData = function showHotspotData(response) {
-
       // Stores API response
       var data = response.obj || response;
       data = data.result; // data.result contains an array of objects
-
       // Creates a base table that the data will be stored in
       $('#gene_hotspots', appContext).html(
         '<table id="gene_hotspot-table" width="100%" cellspacing="0"' +
@@ -162,19 +156,16 @@
         '<thead><tr><th>Start Position</th><th>End Position</th>' +
         '<th>Hotspot Sequence</th></tr></thead>' +
         '<tbody id="gene_hotspot-data"></tbody></table>');
-
       // Loops through each JSON object in the data
       for (var i = 0; i < data.length; i++) {
         // Saves data in strings to later be added to table
         var start = '<td>' + data[i].start_position + '</td>';
         var end = '<td>' + data[i].end_position + '</td>';
         var sequence = '<td>' + data[i].hotspot_sequence + '</td>';
-
         // Dynamically adds saved data to the table
         $('#gene_hotspot-data', appContext).append('<tr>' + start +
         end + sequence + '</tr>');
       }
-
       // Converts normal table to DataTable
       hotspotTable = $('#gene_hotspot-table', appContext).DataTable({
         oLanguage: { // Overrides default text to make it more specific to this app
@@ -184,7 +175,6 @@
         dom: 'Rlfrtip', // Allows for user to reorder columns
         stateSave: true // Saves the state of the table between loads
       });
-
       // Add the number of rows to the tab name
       $('#hot_num_rows', appContext).html(' (' + hotspotTable.data().length + ')');
     };
