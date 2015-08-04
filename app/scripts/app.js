@@ -108,9 +108,9 @@
             // Saves data in strings to later be added to table
             var locusID = '<td>' + data[i].locus_id + '</td>';
             var name = '<td>' + data[i].name + '</td>';
-            var def = '<td>' + data[i].def '</td>';
-            var namespace = '<td>' + data[i].namespace '</td>';
-            var evidenceCode = '<td>' + data[i].evidence_code '</td>';
+            var def = '<td>' + data[i].def + '</td>';
+            var namespace = '<td>' + data[i].namespace + '</td>';
+            var evidenceCode = '<td>' + data[i].evidence_code + '</td>';
 
             // Dynamically adds saved data to the table
             $('#gene_go-data', appContext).append('<tr>' + locusID +
