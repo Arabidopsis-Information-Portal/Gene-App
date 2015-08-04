@@ -22,9 +22,9 @@
       $('#gene_chromosome', appContext).html('<h2>Loading Chromosome Information...</h2>');
       $('#gene_go', appContext).html('<h2>Loading GO Information...</h2>');
 
-      // Saves user-input as a parameter
+      // Saves user input as a dict parameter
       var params = {
-        'Identifier': $('input[name=gene-input]').val(),
+        'Identifier': $('input[name=identifierInput').val(),
         'Output': 'all'
       };
 
