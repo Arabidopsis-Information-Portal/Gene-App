@@ -8,11 +8,11 @@
     var Agave = window.Agave;
 
     // Will be used to store initialized DataTables
-    var chromosomeTable,
-    goTable;
+    var chromosomeTable;
+    //var goTable;
 
     // Once the search button is clicked, retrieve the data
-    $('#searchButton').submit(function(event) {
+    $('#searchButton').submit(function() {
       console.log('search button pressed');
       // Reset UI
       $('#error', appContext).empty();
@@ -88,7 +88,8 @@
           dom: 'Rlfrtip', // Allows for user to reorder columns
           stateSave: true // Saves the state of the table between loads
         });
-      }
+      };
+
       // Creates a table to display go data
       var showgoData = function showgoData(response) {
         console.log('showgoData');
