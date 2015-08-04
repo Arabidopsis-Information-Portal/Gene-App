@@ -1,9 +1,10 @@
 <div class="science-app" data-app-name="gene-app">
   <h2>Gene Search</h2>
 
-  <form>
-  Gene ID: <input type="text" name="identifierInput">
-  <button type="button" id="searchButton">Search</button>
+  <form id="geneSearch">
+  Gene ID: <input type="text" name="identifierInput" value="AT4G34260" placeholder="AGI ID">
+  <button type="submit" id="searchButton" class="btn btn-success">Search</button>
+  <button type="button" id="clearButton" class="btn btn-danger">Clear</button>
   <h6><i>Example GeneID: AT4G34260</i></h6>
   </form>
 
