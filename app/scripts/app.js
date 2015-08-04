@@ -4,6 +4,7 @@
 
   // Only runs once Agave is ready
   window.addEventListener('Agave::ready', function() {
+    console.log('agave is ready');
     var Agave = window.Agave;
 
     // Will be used to store initialized DataTables
@@ -11,9 +12,8 @@
     goTable;
 
     // Once the search button is clicked, retrieve the data
-    //change to submit
-    $('#searchButton').click(function() {
-
+    $('#searchButton').submit(function(event) {
+      console.log('search button pressed');
       // Reset UI
       $('#error', appContext).empty();
 
@@ -28,6 +28,7 @@
         'Output': 'all'
       };
 
+      console.log('api adama');
       // Calls API to retrieve chromosome data, using saved parameter
       Agave.api.adama.search(
         {namespace: 'ichezhia-dev', service: 'gene_by_geneid_v0.2',
@@ -35,9 +36,6 @@
         showChromosomeData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception
       );
-      console.log('adama');
-
-
 
       // Calls API to retrieve go data, using saved parameter
       Agave.api.adama.search(
@@ -51,6 +49,7 @@
 
     // Creates a table to display chromosome data
     var showChromosomeData = function showChromosomeData(response) {
+      console.log('showChromosomeData');
       // Stores API response
       var data = response.obj || response;
       data = data.result; // data.result contains an array of objects
@@ -92,6 +91,7 @@
       }
       // Creates a table to display go data
       var showgoData = function showgoData(response) {
+        console.log('showgoData');
         // Stores API response
         var data = response.obj || response;
         data = data.result; // data.result contains an array of objects
@@ -102,6 +102,7 @@
           '<thead><tr><th>Locus ID</th><th>Name</th>' +
           '<th>Def</th><th>Namespace</th><th>Evidence Code</th></tr></thead>' +
           '<tbody id="gene_go-data"></tbody></table>');
+
           // Loops through each JSON object in the data
           for (var i = 0; i < data.length; i++) {
             // Saves data in strings to later be added to table
@@ -115,19 +116,16 @@
             $('#gene_go-data', appContext).append('<tr>' + locusID +
             name + def + namespace + evidenceCode + '</tr>');
           }
-
-      };
+        };
 
         // Displays an error message if the API returns an error
         var showErrorMessage = function showErrorMessage(response) {
+          console.log('error:');
           console.log(response.obj.message);
           $('#gene_error', appContext).html(
             '<h4>API Error.' +
             'See below:</h4><div class="alert alert-danger" role="alert">' +
             response.obj.message + '</div>');
-
           };
-
         });
-
       })(window, jQuery);
