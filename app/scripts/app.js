@@ -19,12 +19,12 @@
 
       // Inserts loading text, will be replaced by table
       console.log('loading');
-      $('#gene_chromosome', appContext).html('<h2>Loading...</h2>');
-      $('#gene_go', appContext).html('<h2>Loading...</h2>');
+      $('#gene_chromosome', appContext).html('<h2>Loading Chromosome Information...</h2>');
+      $('#gene_go', appContext).html('<h2>Loading GO Information...</h2>');
 
       // Saves user-input as a parameter
       var params = {
-        'Identifier': $('input[name=gene_transcript-input]').val(),
+        'Identifier': $('input[name=gene-input]').val(),
         'Output': 'all'
       };
 
