@@ -6,13 +6,20 @@
   window.addEventListener('Agave::ready', function() {
     console.log('agave is ready');
     var Agave = window.Agave;
+    console.log('window.agave');
 
     // Will be used to store initialized DataTables
     var chromosomeTable;
     //var goTable;
 
+    console.log('line');
+
+
     // Once the search button is clicked, retrieve the data
-    $('#searchButton').submit(function() {
+    $('#searchButton').submit(function(event) {
+
+      console.log(event);
+      /*
       console.log('search button pressed');
       // Reset UI
       $('#error', appContext).empty();
@@ -26,7 +33,8 @@
       var params = {
         'Identifier': $('input[name=identifierInput').val(),
         'Output': 'all'
-      };
+
+      });
 
       console.log('api adama');
       // Calls API to retrieve chromosome data, using saved parameter
@@ -44,7 +52,11 @@
         showgoData, // Displays retrieved data in a table
         showErrorMessage // Displays an error if Adama returns an exception
       );
+
+      */
     });
+
+    console.log('end function');
 
 
     // Creates a table to display chromosome data
