@@ -4,20 +4,26 @@
 
   // Only runs once Agave is ready
   window.addEventListener('Agave::ready', function() {
+    console.log('agave is ready');
     var Agave = window.Agave;
+    console.log('window.agave');
 
     // Will be used to store initialized DataTables
     var chromosomeTable;
     var goTable;
 
+    console.log('line');
+
     // Once the search button is clicked, retrieve the data
     $('#geneSearch').submit(function(event) {
       event.preventDefault();
 
+      console.log('search button pressed');
       // Reset UI
       $('#error', appContext).empty();
 
       // Inserts loading text, will be replaced by table
+      console.log('loading');
       $('#gene_chromosome', appContext).html('<h2>Loading Chromosome Information...</h2>');
       $('#gene_go', appContext).html('<h2>Loading GO Information...</h2>');
 
@@ -27,6 +33,7 @@
         'Output': 'all'
       };
 
+      console.log('api adama');
       // Calls API to retrieve chromosome data, using saved parameter
       Agave.api.adama.search(
         {namespace: 'ichezhia-dev', service: 'gene_by_geneid_v0.2',
@@ -64,12 +71,16 @@
       $('a[href="#about"]', appContext).tab('show');
     });
 
+    console.log('end function');
+
     // Creates a table to display chromosome data
     var showChromosomeData = function showChromosomeData(response) {
+      console.log('showChromosomeData');
       // Stores API response
       var data = response.obj || response;
       data = data.result; // data.result contains an array of objects
       // Creates a base table that the data will be stored in
+      console.log('Chromosome data: ' + JSON.stringify(data));
       $('#gene_chromosome', appContext).html(
         '<table width="100%" cellspacing="0" id="gene_chromosome-table"' +
         'class="table table-striped table-bordered table-hover">' +
@@ -94,12 +105,10 @@
 
         // Converts normal table to DataTable
         chromosomeTable = $('#gene_chromosome-table', appContext).DataTable({
-          /*
           oLanguage: { // Overrides default text to make it more specific to this app
-            sSearch: 'Search:',
+            sSearch: 'Narrow results:',
             sEmptyTable: 'No chromosomeental phosphorylation data available for this transcript id.'
           },
-          */
           dom: 'Rlfrtip', // Allows for user to reorder columns
           stateSave: true // Saves the state of the table between loads
         });
@@ -109,9 +118,11 @@
 
       // Creates a table to display go data
       var showgoData = function showgoData(response) {
+        console.log('showgoData');
         // Stores API response
         var data = response.obj || response;
         data = data.result; // data.result contains an array of objects
+        console.log('GO data: ' + JSON.stringify(data));
         // Creates a base table that the data will be stored in
         $('#gene_go', appContext).html(
           '<table id="gene_go-table" width="100%" cellspacing="0"' +
@@ -136,9 +147,9 @@
 
           // Converts normal table to DataTable
           goTable = $('#gene_go-table', appContext).DataTable({
-            oLanguage: {
-              sSearch: 'Search:',
-              sEmptyTable: 'No data available.'
+            oLanguage: { // Overrides default text to make it more specific to this app
+              sSearch: 'Narrow results:',
+              sEmptyTable: 'No chromosomeental phosphorylation data available for this transcript id.'
             },
             dom: 'Rlfrtip', // Allows for user to reorder columns
             stateSave: true // Saves the state of the table between loads
@@ -149,6 +160,8 @@
 
         // Displays an error message if the API returns an error
         var showErrorMessage = function showErrorMessage(response) {
+          console.log('error:');
+          console.log(response.obj.message);
           $('#gene_error', appContext).html(
             '<h4>API Error.' +
             'See below:</h4><div class="alert alert-danger" role="alert">' +
