@@ -94,10 +94,12 @@
 
         // Converts normal table to DataTable
         chromosomeTable = $('#gene_chromosome-table', appContext).DataTable({
+          /*
           oLanguage: { // Overrides default text to make it more specific to this app
-            sSearch: 'Narrow results:',
+            sSearch: 'Search:',
             sEmptyTable: 'No chromosomeental phosphorylation data available for this transcript id.'
           },
+          */
           dom: 'Rlfrtip', // Allows for user to reorder columns
           stateSave: true // Saves the state of the table between loads
         });
