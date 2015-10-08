@@ -1,9 +1,19 @@
-#gene_about {
-  padding: 3%;
-}
-#paper-credit {
-  font-size: .8em;
-}
 h4 {
   line-height: 130%;
+}
+
+.row-header {
+    background-color: lightgray;
+    text-align: right;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.results-panel {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.cell-expand {
+    white-space: nowrap;
 }
