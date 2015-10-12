@@ -37,12 +37,31 @@
 
         <!-- About tab -->
         <div role="tabpanel" class="tab-pane fade in active" id="about">
-            <h4>This app displays tables containing data, about a certain gene. </h4>
+            <a href="https://apps.araport.org/thalemine" target="_blank"><img src="https://s.gravatar.com/avatar/978e836a9d65238a784543ad932637cd.png" alt="Araport logo"/></a>
+            <p>This app displays gene data (in table format) obtained from <a href="https://apps.ararport.org/thalemine" target="_blank">ThaleMine <i class="fa fa-external-link"></i></a>,
+            an Arabidopsis-specific instance of <a href="http://intermine.org" target="_blank">InterMine <i class="fa fa-external-link"></i></a>. InterMine is an open source data
+            warehouse built specifically for the integration and analysis of biological data. The specific data displayed in the app includes gene annotation (TAIR & JCVI), GO (Gene ontology) annotation,
+            GeneRIFs (NCBI), and publications associated with a gene (UniProt & NCBI).</p>
 
-            <h3>Instructions:</h3>
-            <p>Enter a locus ID in the input box. An example is shown below the search box. Once search is clicked the tables in the tabs will be loaded with data. Click on any of the tabs to view that table. To search for another gene, click clear and search again.
-            <br><br>
-            The Locus ID follows the format: ATXgYYYYY. The AT refers to Arabidopsis thaliana, the X number corresponds to the chromosome number, the g refers to gene, and the 5 following Ys correspond to the five-digit code, numbered from top to bottom of the chromosome.</p>
+            <h4>Instructions:</h4>
+            <p>To get started, enter an AGI locus identifier in the search box and click on the <strong>Search</strong> button. At this point,
+            data will be loaded in four tabs labeled <strong>Summary</strong>, <strong>GO</strong>, <strong>GeneRIFs</strong>, and <strong>Publications</strong>.
+            The number of records found in each category will be displayed on the tab. The <strong>Summary</strong> tab displays summary gene annotation information such
+            as gene ID, name, symbol, computational description, curator summary, and location data. The <strong>GO</strong> tab lists all of the Gene ontology terms
+            associated with the gene. The <strong>GeneRIFs</strong> tab lists all of the associated additions to the functional annotation of the gene. Finally, the <strong>Publications</strong> tab
+            lists all of the publications associated with the selected gene.</p>
+            <h5>Features (Tables)</h5>
+            <p>
+                <ul>
+                    <li>Sort the table by any column by clicking on the column header.</li>
+                    <li>Filter the results further by entering text in the <strong>Search</strong> box in the upper-right of the table.</li>
+                    <li>Click the expand icon next to the PubMed ID in the GeneRIFs table to show detailed information about the publication.</li>
+                    <li>Clicking on a PubMed ID will display the publication at NCBI.</li>
+                </ul>
+            </p>
+            <p>
+            <em>The AGI locus identifier follows the format: ATXgYYYYY. The 'AT' refers to Arabidopsis thaliana, the 'X' number corresponds to the chromosome number,
+                the 'g' refers to gene, and the 5 following 'Y(s)' correspond to the five-digit code, numbered from top to bottom of the chromosome.</em></p>
 
         </div> <!-- Close #about -->
 
