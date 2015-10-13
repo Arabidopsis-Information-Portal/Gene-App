@@ -163,6 +163,9 @@
                                                                               'language': {
                                                                                   'emptyTable': 'No GO data available for this locus id.'
                                                                               },
+                                                                              'buttons': ['csv','excel','colvis'],
+                                                                              'colReorder': true,
+                                                                              'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                              } );
 
             $('#go_num_rows', appContext).html(' (' + goTable.data().length + ')');
@@ -179,7 +182,10 @@
             var geneRifTable = $('#gene_generif_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
                                                                                         'language': {
                                                                                             'emptyTable': 'No GeneRIF data available for this locus id.'
-                                                                                         }
+                                                                                        },
+                                                                                        'buttons': ['csv','excel','colvis'],
+                                                                                        'colReorder': true,
+                                                                                        'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                        } );
 
             $('#generif_num_rows', appContext).html(' (' + geneRifTable.data().length + ')');
@@ -207,6 +213,9 @@
                                                                                 'language': {
                                                                                     'emptyTable': 'No GO data available for this locus id.'
                                                                                 },
+                                                                                'buttons': ['csv','excel','colvis'],
+                                                                                'colReorder': true,
+                                                                                'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                } );
 
             $('#pub_num_rows', appContext).html(' (' + pubTable.data().length + ')');
@@ -219,6 +228,7 @@
             // clear the error section
             $('#error', appContext).empty();
             // clear the number of result rows from the tabs
+            $('#progress_region', appContext).addClass('hidden');
             $('#summary_locus', appContext).empty();
             $('#go_num_rows', appContext).empty();
             $('#generif_num_rows', appContext).empty();
