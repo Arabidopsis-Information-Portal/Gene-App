@@ -158,12 +158,15 @@
                 return;
             }
 
+            var filename = 'GO_terms_for_' + json.obj.result[0].locus;
             $('#gene_go_results', appContext).html(templates.goTable(json.obj));
             var goTable = $('#gene_go_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
                                                                               'language': {
                                                                                   'emptyTable': 'No GO data available for this locus id.'
                                                                               },
-                                                                              'buttons': ['csv','excel','colvis'],
+                                                                              'buttons': [{'extend': 'csv', 'title': filename},
+                                                                                          {'extend': 'excel', 'title': filename},
+                                                                                          'colvis'],
                                                                               'colReorder': true,
                                                                               'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                              } );
@@ -178,12 +181,15 @@
                 return;
             }
 
+            var filename = 'GeneRIFs_for_' + json.obj.result[0].locus;
             $('#gene_generif_results', appContext).html(templates.geneRifTable(json.obj));
             var geneRifTable = $('#gene_generif_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
                                                                                         'language': {
                                                                                             'emptyTable': 'No GeneRIF data available for this locus id.'
                                                                                         },
-                                                                                        'buttons': ['csv','excel','colvis'],
+                                                                                        'buttons': [{'extend': 'csv', 'title': filename},
+                                                                                                    {'extend': 'excel', 'title': filename},
+                                                                                                    'colvis'],
                                                                                         'colReorder': true,
                                                                                         'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                        } );
@@ -208,12 +214,15 @@
                 return;
             }
 
+            var filename = 'Publications_for_' + json.obj.result[0].locus;
             $('#gene_pub_results', appContext).html(templates.publicationTable(json.obj));
             var pubTable = $('#gene_pub_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
                                                                                 'language': {
                                                                                     'emptyTable': 'No GO data available for this locus id.'
                                                                                 },
-                                                                                'buttons': ['csv','excel','colvis'],
+                                                                                'buttons': [{'extend': 'csv', 'title': filename},
+                                                                                            {'extend': 'excel', 'title': filename},
+                                                                                            'colvis'],
                                                                                 'colReorder': true,
                                                                                 'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                } );
