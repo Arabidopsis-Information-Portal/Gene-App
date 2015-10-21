@@ -11,17 +11,14 @@
         var templates = {
             summaryTable: _.template('<table class="table table-bordered">' +
                                      '<thead></thead><tbody>' +
-                                     '<tr><th class="row-header">Gene ID</th><td><%= locus %></td></tr>' +
+                                     '<tr><th class="row-header">Gene ID</th><td><a href="https://www.araport.org/locus/<%= locus %>" target="_blank"><%= locus %>&nbsp;<i class="fa fa-external-link"></i></a></td></tr>' +
                                      '<tr><th class="row-header">Name</th><td><%= name %></td></tr>' +
                                      '<tr><th class="row-header">Symbol</th><td><%= symbol %></td></tr>' +
                                      '<tr><th class="row-header">Brief Description</th><td><%= brief_description %></td></tr>' +
                                      '<tr><th class="row-header">Computational Description</th><td><%= computational_description %></td></tr>' +
                                      '<tr><th class="row-header">Curator Summary</th><td><%= curator_summary %></td></tr>' +
                                      '<tr><th class="row-header">Length</th><td><%= length %></td></tr>' +
-                                     '<tr><th class="row-header">Location</th><td><%= location %></td></tr>' +
-                                     '<tr><th class="row-header">Chromosome Start</th><td><%= chromosome_start %></td></tr>' +
-                                     '<tr><th class="row-header">Chromosome End</th><td><%= chromosome_end %></td></tr>' +
-                                     '<tr><th class="row-header">Strand</th><td><%= strand %></td></tr>' +
+                                     '<tr><th class="row-header">Location</th><td><a href="https://www.araport.org/locus/<%= locus %>/browse" target="_blank"><%= location %>:<%= chromosome_start %>..<%= chromosome_end %>&nbsp;(<%= strand %>)&nbsp;<i class="fa fa-external-link"></i></a></td></tr>' +
                                      '<tr><th class="row-header">Synonyms</th><td>' +
                                      '<% _.each(synonyms, function(synonym){ %>' +
                                      '<%= synonym %>, ' +
@@ -190,6 +187,7 @@
                                                                                         'buttons': [{'extend': 'csv', 'title': filename},
                                                                                                     {'extend': 'excel', 'title': filename},
                                                                                                     'colvis'],
+                                                                                        'order' : [[ 1, 'desc' ]],
                                                                                         'colReorder': true,
                                                                                         'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                        } );
@@ -218,11 +216,12 @@
             $('#gene_pub_results', appContext).html(templates.publicationTable(json.obj));
             var pubTable = $('#gene_pub_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
                                                                                 'language': {
-                                                                                    'emptyTable': 'No GO data available for this locus id.'
+                                                                                    'emptyTable': 'No Publication data available for this locus id.'
                                                                                 },
                                                                                 'buttons': [{'extend': 'csv', 'title': filename},
                                                                                             {'extend': 'excel', 'title': filename},
                                                                                             'colvis'],
+                                                                                'order' : [[ 1, 'desc' ]],
                                                                                 'colReorder': true,
                                                                                 'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                } );
