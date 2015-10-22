@@ -145,7 +145,7 @@
                 $('#error', appContext).html(warningMessage('No results found for locus identifier \'' + search_locus + '\'. Please try again.'));
             }
 
-            $('#summary_locus', appContext).html(' (' + json.obj.result[0].locus + ')');
+            $('#summary_locus', appContext).html(' ' + json.obj.result[0].locus);
         };
 
         var showGOTable = function showGOTable(json) {
@@ -168,7 +168,7 @@
                                                                               'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                              } );
 
-            $('#go_num_rows', appContext).html(' (' + goTable.data().length + ')');
+            $('#go_num_rows', appContext).html(' ' + goTable.data().length);
         };
 
         var showGeneRIFTable = function showGeneRIFTable(json) {
@@ -192,7 +192,7 @@
                                                                                         'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                        } );
 
-            $('#generif_num_rows', appContext).html(' (' + geneRifTable.data().length + ')');
+            $('#generif_num_rows', appContext).html(' ' + geneRifTable.data().length);
 
             $('#gene_generif_results table', appContext).on('shown.bs.collapse', '.pub-info', function () {
                 var id = $(this).attr('id');
@@ -226,7 +226,7 @@
                                                                                 'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                } );
 
-            $('#pub_num_rows', appContext).html(' (' + pubTable.data().length + ')');
+            $('#pub_num_rows', appContext).html(' ' + pubTable.data().length);
         };
 
         // controls the clear button
