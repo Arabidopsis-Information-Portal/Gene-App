@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "underscore": "~1.8.3",
+    "underscore.string": "~3.2.2",
     "datatables.net": "~1.10.9",
     "datatables.net-bs": "~1.10.9",
     "datatables.net-buttons": "~1.0.3",

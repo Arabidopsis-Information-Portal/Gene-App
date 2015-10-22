@@ -21,9 +21,7 @@
                                      '<tr><th class="row-header">Length</th><td><%= length %></td></tr>' +
                                      '<tr><th class="row-header">Location</th><td><a href="https://www.araport.org/locus/<%= locus %>/browse" target="_blank"><%= location %>:<%= chromosome_start %>..<%= chromosome_end %>&nbsp;(<%= strand %>)&nbsp;<i class="fa fa-external-link"></i></a></td></tr>' +
                                      '<tr><th class="row-header">Synonyms</th><td>' +
-                                     '<% _.each(synonyms, function(synonym){ %>' +
-                                     '<%= synonym %>, ' +
-                                     '<% }) %>' +
+                                     '<%= s.join(",", synonyms) %>' +
                                      '</td></tr>' +
                                      '</tbody></table>'),
             historyTable: _.template('<table class="table table-bordered table-striped">' +
@@ -39,9 +37,7 @@
                                      '<td><%= r.date %></td>' +
                                      '<td><%= r.source %></td>' +
                                      '<td>' +
-                                     '<% _.each(r.loci_involved, function(gene) { %>' +
-                                     '<%= gene %>, ' +
-                                     '<% }) %>' +
+                                     '<%= s.join(",", r.loci_involved) %>' +
                                      '</td>' +
                                      '</tr>' +
                                      '<% }) %>' +
@@ -302,6 +298,19 @@
             $('#pub_num_rows', appContext).html(' ' + pubTable.data().length);
         };
 
+        // method to parse URL encoded parameters by param name
+        var getQueryParam = function( query ) {
+            query = query.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+            var expr = '[\\?&]' + query + '=([^&#]*)';
+            var regex = new RegExp( expr );
+            var results = regex.exec( window.location.href );
+            if( results !== null ) {
+                return decodeURIComponent(results[1].replace(/\+/g, ' '));
+            } else {
+                return false;
+            }
+        };
+
         // controls the clear button
         $('#clearButton', appContext).on('click', function () {
             // clear the gene field
@@ -327,7 +336,7 @@
 
 
         // search form
-        $('#geneSearch').submit(function(event) {
+        $('#geneSearch', appContext).submit(function(event) {
             event.preventDefault();
 
             // Reset error div
@@ -386,6 +395,16 @@
                 'service': 'publications_by_locus_v0.1',
                 'queryParams': params
             }, showPublicationTable, showErrorMessage);
+        });
+
+        // on load, populate the locus_id field if passed as a URL parameter
+        // then, trigger the form submission
+        $( document ).ready(function() {
+            var locus_id = getQueryParam('locus');
+            if(typeof locus_id !== 'undefined' && locus_id !== false) {
+                $('#locus_id', appContext).val(locus_id);
+                $('#searchButton', appContext).trigger('click');
+            }
         });
     });
 })(window, jQuery, _, moment);
