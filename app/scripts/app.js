@@ -1,6 +1,7 @@
 /* global _ */
+/* global moment */
 /* jshint camelcase: false */
-(function(window, $, _, undefined) {
+(function(window, $, _, moment, undefined) {
     'use strict';
     var appContext = $('[data-app-name="gene-app"]');
 
@@ -24,6 +25,26 @@
                                      '<%= synonym %>, ' +
                                      '<% }) %>' +
                                      '</td></tr>' +
+                                     '</tbody></table>'),
+            historyTable: _.template('<table class="table table-bordered table-striped">' +
+                                     '<thead><tr>' +
+                                     '<th>Operation</th>' +
+                                     '<th>Date</th>' +
+                                     '<th>Source</th>' +
+                                     '<th>Genes Involved</th>' +
+                                     '</tr></thead><tbody>' +
+                                     '<% _.each(result, function(r) { %>' +
+                                     '<tr>' +
+                                     '<td><%= r.operation %></td>' +
+                                     '<td><%= r.date %></td>' +
+                                     '<td><%= r.source %></td>' +
+                                     '<td>' +
+                                     '<% _.each(r.loci_involved, function(gene) { %>' +
+                                     '<%= gene %>, ' +
+                                     '<% }) %>' +
+                                     '</td>' +
+                                     '</tr>' +
+                                     '<% }) %>' +
                                      '</tbody></table>'),
             goTable: _.template('<table class="table table-bordered table-striped">' +
                                 '<thead><tr>' +
@@ -120,6 +141,7 @@
             // clear progress bar and spinners
             $('#progress_region', appContext).addClass('hidden');
             $('#summary_locus', appContext).empty();
+            $('#history_num_rows', appContext).empty();
             $('#go_num_rows', appContext).empty();
             $('#generif_num_rows', appContext).empty();
             $('#pub_num_rows', appContext).empty();
@@ -148,6 +170,42 @@
             $('#summary_locus', appContext).html(' ' + json.obj.result[0].locus);
         };
 
+        var showHistoryTable = function showHistoryTable(json) {
+            $('#history_num_rows', appContext).empty();
+            if ( ! (json && json.obj) || json.obj.status !== 'success') {
+                $('#error', appContext).html(errorMessage('Invalid response from server!'));
+                return;
+            }
+
+            var filename = 'History_for_';
+            if (json.obj.result[0]) {
+                filename += json.obj.result[0].locus;
+            } else {
+                filename += $('#locus_id', appContext).val();
+            }
+            $('#gene_history_results', appContext).html(templates.historyTable(json.obj));
+            var historyTable = $('#gene_history_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
+                                                                                        'language': {
+                                                                                            'emptyTable': 'No history data available for this locus id.'
+                                                                                        },
+                                                                                        'buttons': [{'extend': 'csv', 'title': filename},
+                                                                                                    {'extend': 'excel', 'title': filename},
+                                                                                                    'colvis'],
+                                                                                        'columnDefs': [{'render': function(data,type) {
+                                                                                                         var fdate = data.slice(0,4) + '-' + data.slice(4,6) + '-' + data.slice(6);
+                                                                                                         if (type === 'display' || type === 'filter') {
+                                                                                                             return (moment(fdate).format('DD MMM YYYY'));
+                                                                                                         }
+                                                                                                         return data;
+                                                                                                     }, 'targets': 1}],
+                                                                                        'order' : [[ 1, 'desc' ]],
+                                                                                        'colReorder': true,
+                                                                                        'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
+                                                                                       } );
+
+            $('#history_num_rows', appContext).html(' ' + historyTable.data().length);
+        };
+
         var showGOTable = function showGOTable(json) {
             $('#go_num_rows', appContext).empty();
             if ( ! (json && json.obj) || json.obj.status !== 'success') {
@@ -155,7 +213,12 @@
                 return;
             }
 
-            var filename = 'GO_terms_for_' + json.obj.result[0].locus;
+            var filename = 'GO_terms_for_';
+            if (json.obj.result[0]) {
+                filename += json.obj.result[0].locus;
+            } else {
+                filename += $('#locus_id', appContext).val();
+            }
             $('#gene_go_results', appContext).html(templates.goTable(json.obj));
             var goTable = $('#gene_go_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
                                                                               'language': {
@@ -178,7 +241,12 @@
                 return;
             }
 
-            var filename = 'GeneRIFs_for_' + json.obj.result[0].locus;
+            var filename = 'GeneRIFs_for_';
+            if (json.obj.result[0]) {
+                filename += json.obj.result[0].locus;
+            } else {
+                filename += $('#locus_id', appContext).val();
+            }
             $('#gene_generif_results', appContext).html(templates.geneRifTable(json.obj));
             var geneRifTable = $('#gene_generif_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
                                                                                         'language': {
@@ -212,7 +280,12 @@
                 return;
             }
 
-            var filename = 'Publications_for_' + json.obj.result[0].locus;
+            var filename = 'Publications_for_';
+            if (json.obj.result[0]) {
+                filename += json.obj.result[0].locus;
+            } else {
+                filename += $('#locus_id', appContext).val();
+            }
             $('#gene_pub_results', appContext).html(templates.publicationTable(json.obj));
             var pubTable = $('#gene_pub_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
                                                                                 'language': {
@@ -238,11 +311,13 @@
             // clear the number of result rows from the tabs
             $('#progress_region', appContext).addClass('hidden');
             $('#summary_locus', appContext).empty();
+            $('#history_num_rows', appContext).empty();
             $('#go_num_rows', appContext).empty();
             $('#generif_num_rows', appContext).empty();
             $('#pub_num_rows', appContext).empty();
             // clear the tables
             $('#gene_summary_results', appContext).html('<h4>Please search for a gene.</h4>');
+            $('#gene_history_results', appContext).html('<h4>Please search for a gene.</h4>');
             $('#gene_go_results', appContext).html('<h4>Please search for a gene.</h4>');
             $('#gene_generif_results', appContext).html('<h4>Please search for a gene.</h4>');
             $('#gene_pub_results', appContext).html('<h4>Please search for a gene.</h4>');
@@ -260,6 +335,7 @@
 
             // Inserts loading text, will be replaced by table
             $('#gene_summary_results', appContext).html('<h4>Loading summary information...</h4>');
+            $('#gene_history_results', appContext).html('<h4>Loading history information...</h4>');
             $('#gene_go_results', appContext).html('<h4>Loading GO information...</h4>');
             $('#gene_generif_results', appContext).html('<h4>Loading GeneRIF information...</h4>');
             $('#gene_pub_results', appContext).html('<h4>Loading publication information...</h4>');
@@ -267,6 +343,7 @@
             // start progress bar and tab spinners
             $('#progress_region', appContext).removeClass('hidden');
             $('#summary_locus', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
+            $('#history_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#go_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#generif_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#pub_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
@@ -278,9 +355,16 @@
             // Calls ADAMA adapter to retrieve gene summary data
             Agave.api.adama.search({
                 'namespace': 'araport',
-                'service': 'gene_summary_by_locus_v0.1',
+                'service': 'gene_summary_by_locus_v0.2',
                 'queryParams': params
             }, showSummaryTable, showErrorMessage);
+
+            // Calls ADAMA adapter to retrieve gene history data
+            Agave.api.adama.search({
+                'namespace': 'araport',
+                'service': 'gene_history_by_locus_v0.1',
+                'queryParams': params
+            }, showHistoryTable, showErrorMessage);
 
             // Calls ADAMA adapter to retrieve GO data
             Agave.api.adama.search({
@@ -304,4 +388,4 @@
             }, showPublicationTable, showErrorMessage);
         });
     });
-})(window, jQuery, _);
+})(window, jQuery, _, moment);
