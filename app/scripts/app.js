@@ -47,6 +47,7 @@
                                      '<th>Feature</th>' +
                                      '<th>Type</th>' +
                                      '<th>Length</th>' +
+                                     '<th>Location</th>' +
                                      '<th>Chromosome Start</th>' +
                                      '<th>Chromosome End</th>' +
                                      '<th>Strand</th>' +
@@ -56,6 +57,7 @@
                                      '<td><%= r.feature_id %></td>' +
                                      '<td><%= r.feature_type %></td>' +
                                      '<td><%= r.length %></td>' +
+                                     '<td><%= r.location %></td>' +
                                      '<td><%= r.chromosome_start %></td>' +
                                      '<td><%= r.chromosome_end %></td>' +
                                      '<td><%= r.strand %></td>' +
@@ -244,6 +246,7 @@
                                                                                          'buttons': [{'extend': 'csv', 'title': filename},
                                                                                                      {'extend': 'excel', 'title': filename},
                                                                                                      'colvis'],
+                                                                                         'order' : [[ 4, 'asc' ]],
                                                                                          'colReorder': true,
                                                                                          'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                                         } );
@@ -431,7 +434,7 @@
             // Calls ADAMA adapter to retrieve gene history data
             Agave.api.adama.search({
                 'namespace': 'araport',
-                'service': 'gene_features_by_locus_v0.1',
+                'service': 'gene_features_by_locus_v0.2',
                 'queryParams': params
             }, showFeaturesTable, showErrorMessage);
 
