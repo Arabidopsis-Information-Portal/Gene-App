@@ -42,6 +42,26 @@
                                      '</tr>' +
                                      '<% }) %>' +
                                      '</tbody></table>'),
+            featureTable: _.template('<table class="table table-bordered table-striped">' +
+                                     '<thead><tr>' +
+                                     '<th>Feature</th>' +
+                                     '<th>Type</th>' +
+                                     '<th>Length</th>' +
+                                     '<th>Chromosome Start</th>' +
+                                     '<th>Chromosome End</th>' +
+                                     '<th>Strand</th>' +
+                                     '</tr></thead><tbody>' +
+                                     '<% _.each(result, function(r) { %>' +
+                                     '<tr>' +
+                                     '<td><%= r.feature_id %></td>' +
+                                     '<td><%= r.feature_type %></td>' +
+                                     '<td><%= r.length %></td>' +
+                                     '<td><%= r.chromosome_start %></td>' +
+                                     '<td><%= r.chromosome_end %></td>' +
+                                     '<td><%= r.strand %></td>' +
+                                     '</tr>' +
+                                     '<% }) %>' +
+                                     '</tbody></table>'),
             goTable: _.template('<table class="table table-bordered table-striped">' +
                                 '<thead><tr>' +
                                 '<th>Name</th>' +
@@ -138,6 +158,7 @@
             $('#progress_region', appContext).addClass('hidden');
             $('#summary_locus', appContext).empty();
             $('#history_num_rows', appContext).empty();
+            $('#features_num_rows', appContext).empty();
             $('#go_num_rows', appContext).empty();
             $('#generif_num_rows', appContext).empty();
             $('#pub_num_rows', appContext).empty();
@@ -200,6 +221,34 @@
                                                                                        } );
 
             $('#history_num_rows', appContext).html(' ' + historyTable.data().length);
+        };
+
+        var showFeaturesTable = function showFeaturesTable(json) {
+            $('#features_num_rows', appContext).empty();
+            if ( ! (json && json.obj) || json.obj.status !== 'success') {
+                $('#error', appContext).html(errorMessage('Invalid response from server!'));
+                return;
+            }
+
+            var filename = 'Features_for_';
+            if (json.obj.result[0]) {
+                filename += json.obj.result[0].locus;
+            } else {
+                filename += $('#locus_id', appContext).val();
+            }
+            $('#gene_features_results', appContext).html(templates.featureTable(json.obj));
+            var featureTable = $('#gene_features_results table', appContext).DataTable( {'lengthMenu': [10, 25, 50, 100],
+                                                                                         'language': {
+                                                                                             'emptyTable': 'No feature data available for this locus id.'
+                                                                                         },
+                                                                                         'buttons': [{'extend': 'csv', 'title': filename},
+                                                                                                     {'extend': 'excel', 'title': filename},
+                                                                                                     'colvis'],
+                                                                                         'colReorder': true,
+                                                                                         'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
+                                                                                        } );
+
+            $('#features_num_rows', appContext).html(' ' + featureTable.data().length);
         };
 
         var showGOTable = function showGOTable(json) {
@@ -321,12 +370,14 @@
             $('#progress_region', appContext).addClass('hidden');
             $('#summary_locus', appContext).empty();
             $('#history_num_rows', appContext).empty();
+            $('#features_num_rows', appContext).empty();
             $('#go_num_rows', appContext).empty();
             $('#generif_num_rows', appContext).empty();
             $('#pub_num_rows', appContext).empty();
             // clear the tables
             $('#gene_summary_results', appContext).html('<h4>Please search for a gene.</h4>');
             $('#gene_history_results', appContext).html('<h4>Please search for a gene.</h4>');
+            $('#gene_features_results', appContext).html('<h4>Please search for a gene.</h4>');
             $('#gene_go_results', appContext).html('<h4>Please search for a gene.</h4>');
             $('#gene_generif_results', appContext).html('<h4>Please search for a gene.</h4>');
             $('#gene_pub_results', appContext).html('<h4>Please search for a gene.</h4>');
@@ -345,6 +396,7 @@
             // Inserts loading text, will be replaced by table
             $('#gene_summary_results', appContext).html('<h4>Loading summary information...</h4>');
             $('#gene_history_results', appContext).html('<h4>Loading history information...</h4>');
+            $('#gene_features_results', appContext).html('<h4>Loading feature information...</h4>');
             $('#gene_go_results', appContext).html('<h4>Loading GO information...</h4>');
             $('#gene_generif_results', appContext).html('<h4>Loading GeneRIF information...</h4>');
             $('#gene_pub_results', appContext).html('<h4>Loading publication information...</h4>');
@@ -353,6 +405,7 @@
             $('#progress_region', appContext).removeClass('hidden');
             $('#summary_locus', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#history_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
+            $('#features_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#go_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#generif_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#pub_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
@@ -374,6 +427,13 @@
                 'service': 'gene_history_by_locus_v0.1',
                 'queryParams': params
             }, showHistoryTable, showErrorMessage);
+
+            // Calls ADAMA adapter to retrieve gene history data
+            Agave.api.adama.search({
+                'namespace': 'araport',
+                'service': 'gene_features_by_locus_v0.1',
+                'queryParams': params
+            }, showFeaturesTable, showErrorMessage);
 
             // Calls ADAMA adapter to retrieve GO data
             Agave.api.adama.search({
@@ -400,6 +460,9 @@
         // on load, populate the locus_id field if passed as a URL parameter
         // then, trigger the form submission
         $( document ).ready(function() {
+            var app_url = $(location).attr('protocol') + '//' + $(location).attr('host') + '?locus=AT1G65480';
+            $('#app_link_text', appContext).html(app_url);
+            $('#app_link', appContext).attr('href', app_url);
             var locus_id = getQueryParam('locus');
             if(typeof locus_id !== 'undefined' && locus_id !== false) {
                 $('#locus_id', appContext).val(locus_id);

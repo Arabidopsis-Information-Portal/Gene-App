@@ -28,6 +28,7 @@
         <li id="about-tab" class="active"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About</a></li>
         <li id="summary-tab"><a href="#gene_summary" aria-controls="summary" role="tab" data-toggle="tab">Summary <span id="summary_locus" class="badge"></span></a></li>
         <li id="history-tab"><a href="#gene_history" aria-controls="history" role="tab" data-toggle="tab">History <span id="history_num_rows" class="badge"></span></a></li>
+        <li id="features-tab"><a href="#gene_features" aria-controls="features" role="tab" data-toggle="tab">Features <span id="features_num_rows" class="badge"></span></a></li>
         <li id="go-tab"><a href="#gene_go" aria-controls="go" role="tab" data-toggle="tab">GO <span id="go_num_rows" class="badge"></span></a></li>
         <li id="generif-tab"><a href="#gene_generif" aria-controls="generif" role="tab" data-toggle="tab">GeneRIFs <span id="generif_num_rows" class="badge"></span></a></li>
         <li id="pub-tab"><a href="#gene_pub" aria-controls="pub" role="tab" data-toggle="tab">Publications <span id="pub_num_rows" class="badge"></span></a></li>
@@ -46,21 +47,30 @@
 
             <h4>Instructions</h4>
             <p>To get started, enter an AGI locus identifier in the search box and click on the <strong>Search</strong> button. At this point,
-            data will be loaded in four tabs labeled <strong>Summary</strong>, <strong>GO</strong>, <strong>GeneRIFs</strong>, and <strong>Publications</strong>.
+            data will be loaded in six tabs labeled <strong>Summary</strong>, <strong>History</strong>, <strong>Features</strong>, <strong>GO</strong>, <strong>GeneRIFs</strong>, and <strong>Publications</strong>.
             The number of records found in each category will be displayed on the tab. The <strong>Summary</strong> tab displays summary gene annotation information such
-            as gene ID, name, symbol, computational description, curator summary, and location data. The <strong>GO</strong> tab lists all of the Gene ontology terms
+            as gene ID, name, symbol, computational description, curator summary, and location data. The <strong>History</strong> tab lists the important events in the history of a gene. The <strong>Features</strong>
+            tab lists the overlapping features of the gene including exons, introns, CDS, mRNA, UTRs, flanking regions, etc. The <strong>GO</strong> tab lists all of the Gene ontology terms
             associated with the gene. The <strong>GeneRIFs</strong> tab lists all of the associated additions to the functional annotation of the gene. Finally, the <strong>Publications</strong> tab
             lists all of the publications associated with the selected gene.</p>
+
+            <p>A search can be initiated by linking to the application and passing <strong>locus</strong> as a parameter in the URL:
+            <a href="#" id="app_link" target="_self"><span id="app_link_text"></span></a></p>
+
             <h5>Features (Tables)</h5>
             <p>
                 <ul>
                     <li>Sort the table by any column by clicking on the column header.</li>
                     <li>Change the columns that are shown by clicking on the <strong>Column visibility</strong> button and then selecting/de-selecting the columns.</li>
-                    <li>Export all of the data in the GO, GeneRIFs, or Publications table in CSV or Excel format by clicking on the <strong>CSV</strong> or <strong>Excel</strong> button.</li>
+                    <li>Export all of the data in the History, Features, GO, GeneRIFs, or Publications table in CSV or Excel format by clicking on the <strong>CSV</strong> or <strong>Excel</strong> button.</li>
                     <li>Export options:</li>
                         <ul>
                             <li>When exporting CSV or Excel data, the file is saved without prompting in the browser's current download location and will be named as follows:
                                 <ul>
+                                    <li>For History data:</li>
+                                        <ul><li><b>History_for-&lt;query&gt;.(csv/xlsx)</b></li></ul>
+                                    <li>For Feature data:</li>
+                                        <ul><li><b>Features_for-&lt;query&gt;.(csv/xlsx)</b></li></ul>
                                     <li>For GO data:</li>
                                         <ul><li><b>GO_terms_for-&lt;query&gt;.(csv/xlsx)</b></li></ul>
                                     <li>For GeneRIF data:</li>
@@ -77,6 +87,8 @@
                     <li>Filter the results further by entering text in the <strong>Search</strong> box in the upper-right of the table.</li>
                     <li>Click the expand icon next to the PubMed ID in the GeneRIFs table to show detailed information about the publication.</li>
                     <li>Clicking on a PubMed ID will display the publication at NCBI.</li>
+                    <li>Clicking on a gene in the Summary view will display the gene at ThaleMine.</li>
+                    <li>Clicking on a location in the Summary view will display the gene in jBrowse at Araport.</li>
                 </ul>
             </p>
             <p>
@@ -101,6 +113,11 @@
         </div>
         <div role="tabpanel" class="tab-pane fade" id="gene_history">
             <div id="gene_history_results" class="results-panel">
+                <h4>Please search for a gene.</h4>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="gene_features">
+            <div id="gene_features_results" class="results-panel">
                 <h4>Please search for a gene.</h4>
             </div>
         </div>
