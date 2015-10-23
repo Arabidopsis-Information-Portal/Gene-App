@@ -460,7 +460,7 @@
         // on load, populate the locus_id field if passed as a URL parameter
         // then, trigger the form submission
         $( document ).ready(function() {
-            var app_url = $(location).attr('protocol') + '//' + $(location).attr('host') + '?locus=AT1G65480';
+            var app_url = $(location).attr('origin') + $(location).attr('pathname') + '?locus=AT1G65480';
             $('#app_link_text', appContext).html(app_url);
             $('#app_link', appContext).attr('href', app_url);
             var locus_id = getQueryParam('locus');
