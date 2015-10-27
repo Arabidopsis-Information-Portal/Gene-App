@@ -66,19 +66,21 @@
                                      '</tbody></table>'),
             goTable: _.template('<table class="table table-bordered table-striped">' +
                                 '<thead><tr>' +
+                                '<th>Namespace</th>' +
                                 '<th>Name</th>' +
                                 '<th>Description</th>' +
-                                '<th>Namespace</th>' +
-                                '<th>Evidence Code</th>' +
+                                '<th>Evidence Code(s) <a href="http://geneontology.org/page/guide-go-evidence-codes" target="_blank"><i class="fa fa-info-circle"></i></a></th>' +
                                 '<th>Dataset</th>' +
                                 '<th>Dataset Version</th>' +
                                 '</tr></thead><tbody>' +
                                 '<% _.each(result, function(r) { %>' +
                                 '<tr>' +
+                                '<td><%= r.namespace %></td>' +
                                 '<td><%= r.name %></td>' +
                                 '<td><%= r.description %></td>' +
-                                '<td><%= r.namespace %></td>' +
-                                '<td><%= r.evidence_code %></td>' +
+                                '<td>' +
+                                '<%= s.join(",", r.evidence_codes) %>' +
+                                '</td>' +
                                 '<td><%= r.dataset_name %></td>' +
                                 '<td><%= r.dataset_version %></td>' +
                                 '</tr>' +
@@ -275,6 +277,7 @@
                                                                               'buttons': [{'extend': 'csv', 'title': filename},
                                                                                           {'extend': 'excel', 'title': filename},
                                                                                           'colvis'],
+                                                                              'order': [[0, 'asc'],[1, 'asc']],
                                                                               'colReorder': true,
                                                                               'dom': '<"row"<"col-sm-6"l><"col-sm-6"f<"button-row"B>>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>'
                                                                              } );
@@ -441,7 +444,7 @@
             // Calls ADAMA adapter to retrieve GO data
             Agave.api.adama.search({
                 'namespace': 'araport',
-                'service': 'gene_ontology_by_locus_v0.1',
+                'service': 'gene_ontology_by_locus_v0.2',
                 'queryParams': params
             }, showGOTable, showErrorMessage);
 
