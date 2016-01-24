@@ -470,7 +470,11 @@
             $('#app_link_text', appContext).html(app_url);
             $('#app_link', appContext).attr('href', app_url);
             var locus_id = getQueryParam('locus');
+            var embed_mode = getQueryParam('embed');
             if(typeof locus_id !== 'undefined' && locus_id !== false) {
+                if(typeof embed_mode !== 'undefined' && embed_mode !== false) {
+                    $('.embed_mode_elem_hide', appContext).hide();
+                }
                 $('#locus_id', appContext).val(locus_id);
                 $('#searchButton', appContext).trigger('click');
             }

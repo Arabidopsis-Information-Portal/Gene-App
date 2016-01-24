@@ -1,15 +1,16 @@
 <div class="science-app" data-app-name="gene-app">
 
-    <h3>Enter a gene name to search ThaleMine</h3>
-    <p>Locus ID (e.g. AT1G65480):</p>
-    <form id="geneSearch" class="form-inline">
-        <label for="locus_id" class="sr-only">Locus ID:</label>
-        <input type="text" name="locus_id" id="locus_id" value="AT1G65480" class="form-control" placeholder="e.g. AT1G65480">
-        <button type="submit" id="searchButton" class="btn btn-success">Search</button>
-        <button type="button" id="clearButton" class="btn btn-danger">Clear</button>
-    </form>
-
+    <span class="embed_mode_elem_hide">
+        <h3>Enter a gene name to search ThaleMine</h3>
+        <p>Locus ID (e.g. AT1G65480):</p>
+        <form id="geneSearch" class="form-inline">
+            <label for="locus_id" class="sr-only">Locus ID:</label>
+            <input type="text" name="locus_id" id="locus_id" value="AT1G65480" class="form-control" placeholder="e.g. AT1G65480">
+            <button type="submit" id="searchButton" class="btn btn-success">Search</button>
+            <button type="button" id="clearButton" class="btn btn-danger">Clear</button>
+        </form>
     <br>
+    </span>
 
      <div id="error"></div>
      <div id="progress_region" class="hidden">
@@ -25,7 +26,7 @@
 
     <!-- Navigation tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li id="about-tab" class="active"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About</a></li>
+        <li id="about-tab" class="active embed_mode_elem_hide"><a href="#about" aria-controls="about" role="tab" data-toggle="tab">About</a></li>
         <li id="summary-tab"><a href="#gene_summary" aria-controls="summary" role="tab" data-toggle="tab">Summary <span id="summary_locus" class="badge"></span></a></li>
         <li id="history-tab"><a href="#gene_history" aria-controls="history" role="tab" data-toggle="tab">History <span id="history_num_rows" class="badge"></span></a></li>
         <li id="features-tab"><a href="#gene_features" aria-controls="features" role="tab" data-toggle="tab">Features <span id="features_num_rows" class="badge"></span></a></li>
