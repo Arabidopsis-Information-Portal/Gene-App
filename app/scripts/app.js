@@ -4,10 +4,13 @@
 (function(window, $, _, moment, undefined) {
     'use strict';
     var appContext = $('[data-app-name="gene-app"]');
+    var default_tab_text = 'Please enter an identifier above to search for gene data.';
+    var number_of_adama_calls = 6;
 
     // Only runs once Agave is ready
     window.addEventListener('Agave::ready', function() {
         var Agave = window.Agave;
+        var adama_calls = number_of_adama_calls;
 
         var templates = {
             summaryTable: _.template('<table class="table table-bordered">' +
@@ -156,10 +159,36 @@
                    message + '</div>';
         };
 
+        var disableForm = function disableForm() {
+            var search_button = $('#searchButton', appContext);
+            search_button.html('<i class="fa fa-refresh fa-spin"></i> Searching...');
+            search_button.prop('disabled', true);
+            $('#locus_id', appContext).prop('disabled', true);
+            $('#clearButton', appContext).prop('disabled', true);
+        };
+
+        var enableForm = function enableForm() {
+            var search_button = $('#searchButton', appContext);
+            search_button.html('Search');
+            search_button.prop('disabled', false);
+            $('#locus_id', appContext).prop('disabled', false);
+            $('#clearButton', appContext).prop('disabled', false);
+        };
+
+        // re-enables form after all Adama calls have returned
+        var checkAllCalls = function checkAllCalls() {
+            --adama_calls;
+            console.log('Adama calls remaining: ' + adama_calls);
+            if (adama_calls === 0) {
+                console.log('Re-enabling form... all calls returned.');
+                enableForm();
+                adama_calls = number_of_adama_calls;
+            }
+        };
+
         // Displays an error message if the API returns an error
         var showErrorMessage = function showErrorMessage(response) {
             // clear progress bar and spinners
-            $('#progress_region', appContext).addClass('hidden');
             $('#summary_locus', appContext).empty();
             $('#history_num_rows', appContext).empty();
             $('#features_num_rows', appContext).empty();
@@ -168,10 +197,10 @@
             $('#pub_num_rows', appContext).empty();
             console.error('Status: ' + response.obj.status + ' Message: ' + response.obj.message);
             $('#error', appContext).html(errorMessage('API Error: ' + response.obj.message));
+            checkAllCalls();
         };
 
         var showSummaryTable = function showSummaryTable(json) {
-            $('#progress_region', appContext).addClass('hidden');
             $('#summary_locus', appContext).empty();
             if ( ! (json && json.obj) || json.obj.status !== 'success') {
                 $('#error', appContext).html(errorMessage('Invalid response from server!'));
@@ -189,6 +218,7 @@
             }
 
             $('#summary_locus', appContext).html(' ' + json.obj.result[0].locus);
+            checkAllCalls();
         };
 
         var showHistoryTable = function showHistoryTable(json) {
@@ -225,6 +255,7 @@
                                                                                        } );
 
             $('#history_num_rows', appContext).html(' ' + historyTable.data().length);
+            checkAllCalls();
         };
 
         var showFeaturesTable = function showFeaturesTable(json) {
@@ -254,6 +285,7 @@
                                                                                         } );
 
             $('#features_num_rows', appContext).html(' ' + featureTable.data().length);
+            checkAllCalls();
         };
 
         var showGOTable = function showGOTable(json) {
@@ -283,6 +315,7 @@
                                                                              } );
 
             $('#go_num_rows', appContext).html(' ' + goTable.data().length);
+            checkAllCalls();
         };
 
         var showGeneRIFTable = function showGeneRIFTable(json) {
@@ -322,6 +355,7 @@
                 var id = $(this).attr('id');
                 $('#b'+id, appContext).html('<i class="fa fa-caret-square-o-down"></i>');
             });
+            checkAllCalls();
         };
 
         var showPublicationTable = function showPublicationTable(json) {
@@ -351,6 +385,7 @@
                                                                                } );
 
             $('#pub_num_rows', appContext).html(' ' + pubTable.data().length);
+            checkAllCalls();
         };
 
         // method to parse URL encoded parameters by param name
@@ -368,12 +403,14 @@
 
         // controls the clear button
         $('#clearButton', appContext).on('click', function () {
+            // reset adama call counter
+            adama_calls = number_of_adama_calls;
+
             // clear the gene field
             $('#locus_id', appContext).val('');
             // clear the error section
             $('#error', appContext).empty();
             // clear the number of result rows from the tabs
-            $('#progress_region', appContext).addClass('hidden');
             $('#summary_locus', appContext).empty();
             $('#history_num_rows', appContext).empty();
             $('#features_num_rows', appContext).empty();
@@ -381,12 +418,12 @@
             $('#generif_num_rows', appContext).empty();
             $('#pub_num_rows', appContext).empty();
             // clear the tables
-            $('#gene_summary_results', appContext).html('<h4>Please search for a gene.</h4>');
-            $('#gene_history_results', appContext).html('<h4>Please search for a gene.</h4>');
-            $('#gene_features_results', appContext).html('<h4>Please search for a gene.</h4>');
-            $('#gene_go_results', appContext).html('<h4>Please search for a gene.</h4>');
-            $('#gene_generif_results', appContext).html('<h4>Please search for a gene.</h4>');
-            $('#gene_pub_results', appContext).html('<h4>Please search for a gene.</h4>');
+            $('#gene_summary_results', appContext).html('<h4>' + default_tab_text + '</h4>');
+            $('#gene_history_results', appContext).html('<h4>' + default_tab_text + '</h4>');
+            $('#gene_features_results', appContext).html('<h4>' + default_tab_text + '</h4>');
+            $('#gene_go_results', appContext).html('<h4>' + default_tab_text + '</h4>');
+            $('#gene_generif_results', appContext).html('<h4>' + default_tab_text + '</h4>');
+            $('#gene_pub_results', appContext).html('<h4>' + default_tab_text + '</h4>');
             // select the about tab
             $('a[href="#about"]', appContext).tab('show');
         });
@@ -399,6 +436,9 @@
             // Reset error div
             $('#error', appContext).empty();
 
+            // disable form
+            disableForm();
+
             // Inserts loading text, will be replaced by table
             $('#gene_summary_results', appContext).html('<h4>Loading summary information...</h4>');
             $('#gene_history_results', appContext).html('<h4>Loading history information...</h4>');
@@ -408,7 +448,6 @@
             $('#gene_pub_results', appContext).html('<h4>Loading publication information...</h4>');
 
             // start progress bar and tab spinners
-            $('#progress_region', appContext).removeClass('hidden');
             $('#summary_locus', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#history_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
             $('#features_num_rows', appContext).html('<i class="fa fa-refresh fa-spin"></i>');
