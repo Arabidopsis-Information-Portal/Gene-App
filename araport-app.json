@@ -1,0 +1,16 @@
+{
+  "namespace" : "gene-app",
+  "name": "Gene App",
+  "description": "Display gene data (in table format) obtained from ThaleMine, an Arabidopsis-specific instance of InterMine.",
+  "html": "app.html",
+  "scripts": [
+    "scripts/app.js"
+  ],
+  "styles": [
+    "styles/app.css"
+  ],
+  "tags": [
+    "arabidopsis", "gene", "ThaleMine", "InterMine"
+  ],
+  "icon": "app/images/logo.png"
+}
